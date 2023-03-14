@@ -1,11 +1,11 @@
 #soroban contract invoke \
-#    --wasm ../target/wasm32-unknown-unknown/release/tips_4_goals.wasm \
+#    --wasm ../target/wasm32-unknown-unknown/release/tip_contract.wasm \
 #    --id 1 \
 #    --fn hello \
 #    -- \
 #    --to friend
 
-soroban contract invoke \
-    --wasm ../target/wasm32-unknown-unknown/release/tips_4_goals.wasm \
-    --id 1 \
-    --fn increment \
+#soroban contract invoke \
+#    --wasm ../target/wasm32-unknown-unknown/release/tip_contract.wasm \
+#    --id 1 \
+#    --fn increment
