@@ -2,9 +2,10 @@
 
 extern crate std;
 
-use soroban_sdk::{Address, Bytes, BytesN, Env, IntoVal, symbol, vec};
+use soroban_sdk::{Address, Bytes, BytesN, Env, IntoVal, map, symbol, vec};
 use soroban_sdk::testutils::{Address as _, Events};
 
+use crate::datatypes::GoalDesc;
 use crate::test::token::TokenClient;
 use crate::Tipper;
 
@@ -25,13 +26,17 @@ fn create_token_contract(e: &Env, admin: &Address) -> TokenClient {
 fn test() {
     let (env, contract_id, client) = setup_env();
     let contract_admin = Address::random(&env);
-    let owner = Address::random(&env);
+    let creator = Address::random(&env);
     let tipper = Address::random(&env);
 
     let contract = create_token_contract(&env, &contract_admin);
     contract.mint(&contract_admin, &tipper, &(ONE_XLM * 1000));
 
-    client.init(&owner, &contract.contract_id, &vec![&env, ONE_XLM, 10 * ONE_XLM]);
+    client.init(&GoalDesc {
+        creator: creator.clone(),
+        token: contract.contract_id.clone(),
+        goals: vec![&env, ONE_XLM, 10 * ONE_XLM],
+    });
 
     client.tip(&Tipper {
         nickname: Bytes::from_array(&env, &[123, 11]),
@@ -78,7 +83,8 @@ fn test() {
 
     client.withdraw();
 
-    assert_eq!(contract.balance(&owner), 11 * ONE_XLM);
+    assert_eq!(contract.balance(&creator), 11 * ONE_XLM);
+    assert_eq!(client.scoreboard(), map![&env, (Bytes::from_array(&env, &[123, 11]), 11 * ONE_XLM)])
 }
 
 fn setup_env() -> (Env, BytesN<32>, ContractClient) {

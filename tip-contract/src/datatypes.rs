@@ -17,7 +17,7 @@ pub enum Phase {
 
 #[contracttype]
 pub struct GoalDesc {
-    pub owner: Address,
+    pub creator: Address,
     pub token: BytesN<32>,
     pub goals: Vec<i128>,
 }
@@ -28,9 +28,14 @@ impl GoalDesc {
             .slice(cur_state.unpaid_idx..cur_state.cur_goal).iter()
             .fold(0i128, |acc, goal| { acc.saturating_add(goal.unwrap()) })
     }
+
+    pub fn goals_met(&self, cur_state: &CurrentState, new_state: &CurrentState) -> Vec<i128> {
+        self.goals.slice(cur_state.cur_goal..new_state.cur_goal)
+    }
 }
 
 #[contracttype]
+#[derive(Clone)]
 pub struct Tipper {
     pub nickname: Bytes,
     pub address: Address,

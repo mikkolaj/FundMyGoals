@@ -1,6 +1,12 @@
 #![no_std]
 
-use soroban_sdk::{Bytes, BytesN, contractimpl, Env, RawVal, Symbol, Vec};
+use soroban_sdk::{Address, Bytes, BytesN, contractimpl, Env, IntoVal, symbol, Vec};
+
+mod tip_contract {
+    soroban_sdk::contractimport!(
+        file = "../target/wasm32-unknown-unknown/release/tip_contract.wasm"
+    );
+}
 
 pub struct Deployer;
 
@@ -9,17 +15,15 @@ impl Deployer {
     pub fn deploy(
         env: Env,
         salt: Bytes,
-        wasm_hash: BytesN<32>, // wasm_hash specifies an on-chain location of the contract we want to deploy
-        init_fn: Symbol,
-        init_args: Vec<RawVal>,
-    ) -> (BytesN<32>, RawVal) {
-        // new contract id is deterministic and derived from provided salt and wasm_hash
+        wasm_hash: BytesN<32>,
+        creator: Address,
+        token: BytesN<32>,
+        goals: Vec<i128>,
+    ) -> BytesN<32> {
         let id = env.deployer().with_current_contract(&salt).deploy(&wasm_hash);
-        // deployer calls the contract's initialization function and passes through the arguments
-        let res: RawVal = env.invoke_contract(&id, &init_fn, init_args);
-
-        // deployer returns the new contract ID and the result of the initialization function
-        (id, res)
+        let goal_desc = tip_contract::GoalDesc { creator: creator, token, goals };
+        let _: () = env.invoke_contract(&id, &symbol!("init"), (goal_desc, ).into_val(&env));
+        id
     }
 }
 

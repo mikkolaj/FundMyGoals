@@ -1,5 +1,8 @@
-soroban contract deploy \
+# Installs tip contract's code on the network
+# Returns Wasm hash
+
+soroban contract install \
     --wasm ../target/wasm32-unknown-unknown/release/tip_contract.wasm \
-    --secret-key SDR2AST6XYDYWFIEHBN64CSM3QY5W3SO3JNKHY4DKKTEEDL2MJ7A6YHI \
+    --secret-key <Creator's private key> \
     --rpc-url https://rpc-futurenet.stellar.org:443 \
     --network-passphrase 'Test SDF Future Network ; October 2022'

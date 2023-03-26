@@ -1,0 +1,14 @@
+Stellar Asset ID (extracted with python script inside "helpers" folder): d93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc528813
+
+Creator's public key: <to-be-filled>
+Creator's private key: <to-be-filled>
+
+Tipper1's public key: <to-be-filled>
+Tipper1's private key: <to-be-filled>
+
+Tipper2's public key: <to-be-filled>
+Tipper2's private key: <to-be-filled>
+
+Wasm hash: <to-be-filled>
+Contract deployer's contract id: <to-be-filled>
+Tip contract's contract id: <to-be-filled>
