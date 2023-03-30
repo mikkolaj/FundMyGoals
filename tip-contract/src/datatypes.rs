@@ -48,7 +48,7 @@ pub struct CurrentState {
     pub goal_money: i128,
     pub unpaid_idx: u32,
     pub cur_goal: u32,
-    pub transfers: Map<Bytes, i128>,
+    pub scoreboard: Map<Bytes, i128>,
 }
 
 
@@ -58,6 +58,6 @@ pub fn empty_state(env: &Env, phase: Phase) -> CurrentState {
         goal_money: 0,
         unpaid_idx: 0,
         cur_goal: 0,
-        transfers: map![&env],
+        scoreboard: map![&env],
     }
 }

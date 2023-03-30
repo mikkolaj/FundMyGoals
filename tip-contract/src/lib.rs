@@ -53,7 +53,7 @@ impl Contract {
 
 
     pub fn scoreboard(env: Env) -> Map<Bytes, i128> {
-        env.storage().get(&DataKey::CurState).unwrap_or(Ok(empty_state(&env, Phase::Uninitlzd))).unwrap().transfers
+        env.storage().get(&DataKey::CurState).unwrap_or(Ok(empty_state(&env, Phase::Uninitlzd))).unwrap().scoreboard
     }
 }
 
@@ -116,9 +116,9 @@ fn state_after_tip(goal_desc: &GoalDesc, cur_state: &CurrentState, tipper: &Tipp
         }
     }
 
-    let cur_tips = cur_state.transfers.get(tipper.nickname.clone()).unwrap_or(Ok(0)).unwrap();
+    let cur_tips = cur_state.scoreboard.get(tipper.nickname.clone()).unwrap_or(Ok(0)).unwrap();
     let tipped_now = max_transfer - amount_left_to_transfer;
-    let mut new_map = cur_state.transfers.clone();
+    let mut new_map = cur_state.scoreboard.clone();
     new_map.set(tipper.nickname.clone(), cur_tips + tipped_now);
 
     let new_state = CurrentState {
@@ -126,7 +126,7 @@ fn state_after_tip(goal_desc: &GoalDesc, cur_state: &CurrentState, tipper: &Tipp
         goal_money: cur_goal_money,
         unpaid_idx: cur_state.unpaid_idx,
         cur_goal: cur_state.cur_goal + goals_met,
-        transfers: new_map,
+        scoreboard: new_map,
     };
 
     (new_state, tipped_now)

@@ -21,7 +21,7 @@ impl Deployer {
         goals: Vec<i128>,
     ) -> BytesN<32> {
         let id = env.deployer().with_current_contract(&salt).deploy(&wasm_hash);
-        let goal_desc = tip_contract::GoalDesc { creator: creator, token, goals };
+        let goal_desc = tip_contract::GoalDesc { creator, token, goals };
         let _: () = env.invoke_contract(&id, &symbol!("init"), (goal_desc, ).into_val(&env));
         id
     }
