@@ -12,3 +12,4 @@ Tipper2's private key: <to-be-filled>
 Wasm hash: <to-be-filled>
 Contract deployer's contract id: <to-be-filled>
 Tip contract's contract id: <to-be-filled>
+Latest ledger entry: <to-be-filled>
